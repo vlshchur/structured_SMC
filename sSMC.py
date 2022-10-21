@@ -232,8 +232,14 @@ class MarginalDistr:
         MET = linalg.expm( dot(self.A, t) )
         return dot(MET, init_cond)
 
-
-
+    def CalcDist(self, num_steps, step, init_cond):
+        pr_dist = np.zeros(num_steps+1)
+        MET = linalg.expm( dot(self.A, step) )
+        for i in range(num_steps):
+            pr_dist[i] = self.la1*init_cond[0]+self.la2*init_cond[1]
+            init_cond = dot(MET, init_cond)
+        pr_dist[num_steps] = self.la1*init_cond[0]+self.la2*init_cond[1]
+        return pr_dist
 
 
 
